@@ -13,7 +13,7 @@ const Article = props => {
     import(`../css/${props.site}/theme.css`)
     return (
       <div className="Article">
-        <div className="billboard" style={billboardStyle} />
+        <div className="poster" style={billboardStyle} />
         <h1>{props.title}</h1>
         <div
           className="content"

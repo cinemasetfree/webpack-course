@@ -7,11 +7,6 @@ import NotFound from "./NotFound"
 
 const UniversalComponent = universal(props => import(`./${props.page}`))
 
-const getSite = staticContext =>
-  staticContext || {
-    site: location.hostname.split(".")[0]
-  }
-
 export default props => {
   return (
     <div>
@@ -27,15 +22,22 @@ export default props => {
         <Route
           path="/about"
           render={({ staticContext }) => {
-            const site = getSite(staticContext)
-            return <UniversalComponent {...site} page="About" />
+            const site = staticContext
+              ? staticContext.site
+              : location.hostname.split(".")[0]
+            return <UniversalComponent site={site} page="About" />
           }}
         />
+
         <Route
           path="/article/:slug"
           render={({ staticContext, match }) => {
-            const site = getSite(staticContext)
-            return <UniversalComponent {...site} {...match} page="Article" />
+            const site = staticContext
+              ? staticContext.site
+              : location.hostname.split(".")[0]
+            return (
+              <UniversalComponent site={site} match={match} page="Article" />
+            )
           }}
         />
         <Route component={NotFound} />

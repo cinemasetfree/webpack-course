@@ -1,30 +1,33 @@
 const path = require("path")
 const webpack = require("webpack")
-const HTMLWebpackPlugin = require("html-webpack-plugin")
+const MiniCSSExtractPlugin = require("mini-css-extract-plugin")
 const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin")
 const UglifyJSPlugin = require("uglifyjs-webpack-plugin")
 const CompressionPlugin = require("compression-webpack-plugin")
 const BrotliPlugin = require("brotli-webpack-plugin")
-const MiniCSSExtractPlugin = require("mini-css-extract-plugin")
 
 module.exports = {
   name: "client",
-  mode: "production",
   entry: {
-    vendor: ["react", "lodash"],
+    vendor: ["react", "react-dom"],
     main: ["./src/main.js"]
   },
+  mode: "production",
   output: {
     filename: "[name]-bundle.js",
     chunkFilename: "[name].js",
     path: path.resolve(__dirname, "../dist"),
     publicPath: "/"
   },
-  devServer: {
-    contentBase: "dist",
-    overlay: true,
-    stats: {
-      colors: true
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          name: "vendor",
+          chunks: "initial",
+          minChunks: 2
+        }
+      }
     }
   },
   module: {
